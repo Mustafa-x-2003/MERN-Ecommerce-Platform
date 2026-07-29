@@ -78,6 +78,18 @@ userSchema.statics.findByCredentials = async function (email, password) {
   }
   return user;
 };
+// Generate Token
 
+userSchema.methods.generateToken = async function () {
+  const user = this;
+
+  const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+
+  user.tokens = user.tokens.concat({ token });
+
+  await user.save();
+
+  return token;
+};
 const User = mongoose.model("User", userSchema);
 export default User;
