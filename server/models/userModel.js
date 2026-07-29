@@ -56,7 +56,7 @@ const userSchema = mongoose.Schema(
   },
   { minimize: false },
 );
-// Hash Password
+// Hash user password before saving to database
 userSchema.pre("save", async function () {
   const user = this;
   if (!user.isModified("password")) {
@@ -66,7 +66,7 @@ userSchema.pre("save", async function () {
   const hashedPassword = await bcrypt.hash(user.password, salt);
   user.password = hashedPassword;
 });
-// login
+// Authenticate user credentials during login
 userSchema.statics.findByCredentials = async function (email, password) {
   const user = await this.findOne({ email });
   if (!user) {
@@ -78,7 +78,7 @@ userSchema.statics.findByCredentials = async function (email, password) {
   }
   return user;
 };
-// Generate Token
+// Generate and store JWT authentication token
 
 userSchema.methods.generateToken = async function () {
   const user = this;
@@ -90,6 +90,13 @@ userSchema.methods.generateToken = async function () {
   await user.save();
 
   return token;
+};
+// Remove sensitive user data before sending response
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.password;
+  delete user.tokens;
+  return user;
 };
 const User = mongoose.model("User", userSchema);
 export default User;
