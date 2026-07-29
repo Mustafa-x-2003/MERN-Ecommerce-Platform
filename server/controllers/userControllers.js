@@ -12,3 +12,18 @@ export const register = async (req, res) => {
     });
   }
 };
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findByCredentials(email, password);
+    res.status(200).json({
+      user,
+    });
+  } catch (e) {
+    res.status(400).json({
+      message: "tttttttt",
+      error: e.message,
+    });
+  }
+};

@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = mongoose.Schema(
   {
@@ -54,6 +56,28 @@ const userSchema = mongoose.Schema(
   },
   { minimize: false },
 );
+// Hash Password
+userSchema.pre("save", async function () {
+  const user = this;
+  if (!user.isModified("password")) {
+    return;
+  }
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(user.password, salt);
+  user.password = hashedPassword;
+});
+// login
+userSchema.statics.findByCredentials = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (!user) {
+    throw new Error("Unable to login. Please check your email and password");
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new Error("Unable to login. Please check your email and password");
+  }
+  return user;
+};
 
 const User = mongoose.model("User", userSchema);
 export default User;
