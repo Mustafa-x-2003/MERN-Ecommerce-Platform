@@ -17,12 +17,14 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findByCredentials(email, password);
+    const token = await user.generateToken();
     res.status(200).json({
       user,
+      token,
     });
   } catch (e) {
     res.status(400).json({
-      message: "tttttttt",
+      message: "Unable to login",
       error: e.message,
     });
   }
