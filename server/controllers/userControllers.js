@@ -1,3 +1,4 @@
+import { json } from "express";
 import User from "../models/userModel.js";
 
 export const register = async (req, res) => {
@@ -28,4 +29,8 @@ export const login = async (req, res) => {
       error: e.message,
     });
   }
+};
+export const getProfile = (req, res) => {
+  const user = req.user;
+  res.status(200).json(user);
 };
