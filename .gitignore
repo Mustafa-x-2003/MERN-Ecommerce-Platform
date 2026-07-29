@@ -1,18 +1,13 @@
 # Dependencies
 node_modules/
-**/node_modules/
 
 # Environment variables
 .env
 .env.*
-**/.env
-**/.env.*
 
 # Build files
 dist/
 build/
-**/dist/
-**/build/
 
 # Logs
 *.log
@@ -31,7 +26,7 @@ Thumbs.db
 # React/Vite
 client/.vite/
 
-# Server uploads (if exists)
+# Server uploads
 server/uploads/
 
 # Coverage
