@@ -86,3 +86,17 @@ export const logout = async (req, res) => {
     });
   }
 };
+export const logoutAll = async (req, res) => {
+  try {
+    const user = req.user;
+    user.tokens = [];
+    await user.save();
+    res.status(200).json({
+      message: "Logged out from all devices successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Unable to logout from all devices",
+    });
+  }
+};
