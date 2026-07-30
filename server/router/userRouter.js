@@ -4,6 +4,7 @@ import {
   login,
   getProfile,
   updateUser,
+  changePassword,
   logout,
   logoutAll,
   deleteUser,
@@ -15,6 +16,7 @@ routerUser.post("/register", register);
 routerUser.post("/login", login);
 routerUser.get("/profile", auth, getProfile);
 routerUser.patch("/update", auth, updateUser);
+routerUser.patch("/password", auth, changePassword);
 routerUser.post("/logout", auth, logout);
 routerUser.post("/logoutAll", auth, logoutAll);
 routerUser.delete("/delete", auth, deleteUser);

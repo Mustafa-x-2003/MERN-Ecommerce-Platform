@@ -1,4 +1,5 @@
-import e, { json } from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import User from "../models/userModel.js";
 
 export const register = async (req, res) => {
@@ -97,6 +98,43 @@ export const logoutAll = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Unable to logout from all devices",
+    });
+  }
+};
+export const changePassword = async (req, res) => {
+  try {
+    const user = req.user;
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        message: "Old password and new password are required",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Old password is incorrect",
+      });
+    }
+
+    if (oldPassword === newPassword) {
+      return res.status(400).json({
+        message: "New password must be different",
+      });
+    }
+
+    user.password = newPassword;
+    user.tokens = user.tokens.filter(({ token }) => token === req.token);
+
+    await user.save();
+    res.status(200).json({
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Unable to change password",
     });
   }
 };
