@@ -1,4 +1,4 @@
-import { json } from "express";
+import e, { json } from "express";
 import User from "../models/userModel.js";
 
 export const register = async (req, res) => {
@@ -13,7 +13,6 @@ export const register = async (req, res) => {
     });
   }
 };
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -58,7 +57,6 @@ export const updateUser = async (req, res) => {
     });
   }
 };
-
 export const deleteUser = async (req, res) => {
   try {
     const user = req.user;
@@ -70,6 +68,21 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({
       message: "Unable to delete account",
       error: error.message,
+    });
+  }
+};
+export const logout = async (req, res) => {
+  try {
+    const user = req.user;
+    const token = req.token;
+    user.tokens = user.tokens.filter((t) => t.token !== token);
+    await user.save();
+    res.status(200).json({
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Unable to logout",
     });
   }
 };
