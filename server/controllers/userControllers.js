@@ -34,3 +34,27 @@ export const getProfile = (req, res) => {
   const user = req.user;
   res.status(200).json(user);
 };
+export const updateUser = async (req, res) => {
+  try {
+    const user = req.user;
+    const allowedUpdate = ["name", "email", "phone"];
+    const updates = Object.keys(req.body);
+    const isValidOperation = updates.every((field) => {
+      return allowedUpdate.includes(field);
+    });
+    if (!isValidOperation) {
+      return res.status(400).json({
+        message: "Invalid update fields",
+      });
+    }
+    updates.forEach((field) => {
+      user[field] = req.body[field];
+    });
+    await user.save();
+    res.status(200).json(user);
+  } catch (e) {
+    res.status(400).json({
+      message: e.message,
+    });
+  }
+};
