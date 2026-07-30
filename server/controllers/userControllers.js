@@ -58,3 +58,18 @@ export const updateUser = async (req, res) => {
     });
   }
 };
+
+export const deleteUser = async (req, res) => {
+  try {
+    const user = req.user;
+    await user.deleteOne();
+    res.status(200).json({
+      message: "Account deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Unable to delete account",
+      error: error.message,
+    });
+  }
+};
