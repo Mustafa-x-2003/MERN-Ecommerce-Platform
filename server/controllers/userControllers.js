@@ -4,6 +4,10 @@ import User from "../models/userModel.js";
 
 export const register = async (req, res) => {
   try {
+    const isExists = await User.findOne({ email: req.body.email });
+    if (isExists) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
     const user = new User(req.body);
     await user.save();
     res.status(201).json({ message: "User created successfully", user });
@@ -24,7 +28,7 @@ export const login = async (req, res) => {
       token,
     });
   } catch (e) {
-    res.status(400).json({
+    res.status(401).json({
       message: "Unable to login",
       error: e.message,
     });
