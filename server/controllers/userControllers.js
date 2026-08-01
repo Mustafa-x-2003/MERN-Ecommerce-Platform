@@ -14,7 +14,6 @@ export const register = async (req, res) => {
   } catch (e) {
     res.status(400).json({
       message: "Registration failed",
-      error: e.message,
     });
   }
 };
@@ -51,14 +50,26 @@ export const updateUser = async (req, res) => {
         message: "Invalid update fields",
       });
     }
+    const existingUser = await User.findOne({
+      email: req.body.email,
+      _id: { $ne: user._id },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Email is already in use",
+      });
+    }
+
     updates.forEach((field) => {
       user[field] = req.body[field];
     });
     await user.save();
     res.status(200).json(user);
   } catch (e) {
-    res.status(400).json({
-      message: e.message,
+    res.status(500).json({
+      message: "Please enter valid data",
+      error: e,
     });
   }
 };
