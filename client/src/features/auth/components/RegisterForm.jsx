@@ -1,0 +1,96 @@
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Link } from "react-router";
+
+export function RegisterForm({ className, form, setForm, onSubmit }) {
+  return (
+    <div className={`flex flex-col gap-6 ${className}`}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Create an account</CardTitle>
+          <CardDescription>
+            Enter your information below to create your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="name">Full Name</FieldLabel>
+
+                <Input
+                  value={form.name}
+                  onChange={(e) => {
+                    setForm({ ...form, name: e.target.value });
+                  }}
+                  id="name"
+                  type="text"
+                  placeholder="Musta Sami"
+                  required
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  value={form.email}
+                  onChange={(e) => {
+                    setForm({ ...form, email: e.target.value });
+                  }}
+                  id="email"
+                  type="email"
+                  placeholder="m.sami.office@gmail.com"
+                  required
+                />
+                <FieldDescription>
+                  We&apos;ll use this to contact you. We will not share your
+                  email with anyone else.
+                </FieldDescription>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <Input
+                  value={form.password}
+                  onChange={(e) => {
+                    setForm({ ...form, password: e.target.value });
+                  }}
+                  id="password"
+                  type="password"
+                  required
+                />
+                <FieldDescription>
+                  Must be at least 8 characters long.
+                </FieldDescription>
+              </Field>
+              <FieldGroup>
+                <Field>
+                  <Button onClick={onSubmit} type="submit">
+                    Create Account
+                  </Button>
+                  <Button variant="outline" type="button">
+                    Sign up with Google
+                  </Button>
+                  <FieldDescription className="px-6 text-center">
+                    Already have an account? <Link to={"/login"}>Sign in</Link>
+                  </FieldDescription>
+                </Field>
+              </FieldGroup>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
