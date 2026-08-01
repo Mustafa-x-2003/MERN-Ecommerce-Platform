@@ -19,10 +19,11 @@ const AuthContext = createContext();
 export default function AuthProvider({ children }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const currentUser = async () => {
       try {
+        
         setLoading(true);
         const token = localStorage.getItem("token");
         if (token) {
@@ -78,8 +79,11 @@ export default function AuthProvider({ children }) {
     try {
       setLoading(true);
       await logoutApi();
+      setUser(null);
+      toast.success("Logged out successfully");
       navigate("/login");
     } catch (error) {
+      toast.error("Logout failed");
       console.log(error);
     } finally {
       setLoading(false);
