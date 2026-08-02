@@ -33,7 +33,7 @@ export default function NavBare() {
   const icons = [
     { path: "/wishlist", title: "Wishlist", icon: <Heart /> },
     { path: "/cart", title: "Cart", icon: <ShoppingCart /> },
-    { path: "/profile", title: "Profile", icon: <UserRound /> },
+    { path: "/profile/overview", title: "Profile", icon: <UserRound /> },
   ];
   return (
     <header className="w-full fixed top-0 z-1000 border-b border-border bg-background py-4">

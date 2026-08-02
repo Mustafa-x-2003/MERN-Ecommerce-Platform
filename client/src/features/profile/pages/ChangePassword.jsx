@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ProfileForm from "../components/ProfileForm";
 import { useAuth } from "@/context/AuthContext";
 
-export default function EditProfile() {
+export default function ChangePassword() {
   const { changePassword } = useAuth();
   const [form, setForm] = useState({
     oldPassword: "",
@@ -33,7 +33,7 @@ export default function EditProfile() {
   }
   return (
     <div>
-      <h2 className="pb-4">Edit Profile</h2>
+      <h2 className="pb-4">Change Password</h2>
       <ProfileForm
         fields={passwordFields}
         formData={form}

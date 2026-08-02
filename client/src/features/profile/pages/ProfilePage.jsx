@@ -16,6 +16,11 @@ import { NavLink, Outlet } from "react-router";
 export default function ProfilePage() {
   const links = [
     {
+      title: "Profile Overview",
+      path: "/profile/overview",
+      icon: <User />,
+    },
+    {
       title: "Edit Profile",
       path: "/profile/edit",
       icon: <User />,
@@ -38,7 +43,7 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="container flex gap-4 justify-between mx-auto flex justify-center min-h-[calc(100vh-72px)] py-10">
+    <div className=" flex gap-4 justify-between py-10">
       <Card className="w-full h-fit md:w-auto flex-shrink max-w-md">
         <CardHeader className="flex flex-col items-center text-center">
           <Avatar className="h-24 w-24">
@@ -71,7 +76,7 @@ export default function ProfilePage() {
           ))}
         </CardContent>
       </Card>
-      <div className=" min-100 flex-1">
+      <div className="  flex-1">
         <Outlet />
       </div>
     </div>
