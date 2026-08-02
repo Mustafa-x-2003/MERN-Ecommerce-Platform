@@ -11,6 +11,7 @@ import EditProfile from "../features/profile/pages/EditProfile";
 import ChangePassword from "@/features/profile/pages/ChangePassword";
 import Addresses from "../features/profile/pages/Addresses";
 import Settings from "../features/profile/pages/Settings";
+import ProfileOverview from "../features/profile/pages/ProfileOverview";
 
 export default function AppRoutes() {
   return (
@@ -30,6 +31,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         >
+          <Route path="overview" element={<ProfileOverview />} />
           <Route path="edit" element={<EditProfile />} />
           <Route path="password" element={<ChangePassword />} />
           <Route path="addresses" element={<Addresses />} />
