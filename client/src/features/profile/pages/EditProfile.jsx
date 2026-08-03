@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ProfileForm from "../components/ProfileForm";
 // import { useAuth } from "@/context/AuthContext";
 import { getProfile, updateProfile } from "@/features/auth/auth.service";
 import { toast } from "react-toastify";
 
 export default function EditProfile() {
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -18,7 +13,7 @@ export default function EditProfile() {
   useEffect(() => {
     const getdata = async () => {
       const res = await getProfile();
-      setUser(res.data);
+
       setForm({
         name: res.data.name,
         email: res.data.email,
@@ -28,23 +23,26 @@ export default function EditProfile() {
     getdata();
   }, []);
 
-  const profileFields = [
-    {
-      name: "name",
-      label: "Name",
-      type: "text",
-    },
-    {
-      name: "email",
-      label: "Email",
-      type: "email",
-    },
-    {
-      name: "phone",
-      label: "Phone",
-      type: "text",
-    },
-  ];
+  const profileFields = useMemo(
+    () => [
+      {
+        name: "name",
+        label: "Name",
+        type: "text",
+      },
+      {
+        name: "email",
+        label: "Email",
+        type: "email",
+      },
+      {
+        name: "phone",
+        label: "Phone",
+        type: "text",
+      },
+    ],
+    [],
+  );
   async function editProfile() {
     try {
       await updateProfile(form);

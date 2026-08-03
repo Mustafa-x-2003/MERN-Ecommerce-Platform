@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -20,62 +21,69 @@ export default function AuthProvider({ children }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const currentUser = async () => {
-      try {
-        
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        if (token) {
-          const res = await getProfile();
-          setUser(res.data);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.log(error);
+
+  const fetchCurrentUser = useCallback(async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await getProfile();
+        setUser(res.data);
+      } else {
         setUser(null);
+      }
+    } catch (error) {
+      console.log(error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
+
+  const handleRegister = useCallback(
+    async (payload) => {
+      try {
+        setLoading(true);
+        await registerApi(payload);
+        toast.success("Account created successfully");
+        navigate("/login");
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Something went wrong");
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [navigate],
+  );
 
-    currentUser();
-  }, []);
+  const handleLogin = useCallback(
+    async (payload) => {
+      try {
+        setLoading(true);
+        const res = await loginApi(payload);
 
-  const register = async (payload) => {
-    try {
-      setLoading(true);
-      await registerApi(payload);
-      toast.success("Account created successfully");
-      navigate("/login");
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
+        localStorage.setItem("token", res.data.token);
+        const profile = await getProfile();
+        setUser(profile.data);
+        toast.success("Login successful");
 
-  const login = async (payload) => {
-    try {
-      setLoading(true);
-      const res = await loginApi(payload);
-
-      localStorage.setItem("token", res.data.token);
-      const profile = await getProfile();
-      setUser(profile.data);
-      toast.success("Login successful");
-      setTimeout(() => {
         navigate("/");
-      }, 50);
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  };
-  const logout = async () => {
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Login failed");
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [navigate],
+  );
+
+  const handleLogout = useCallback(async () => {
     try {
       setLoading(true);
       await logoutApi();
@@ -88,8 +96,9 @@ export default function AuthProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  };
-  const changePassword = async (payload) => {
+  }, [navigate]);
+  
+  const handleChangePassword = useCallback(async (payload) => {
     try {
       setLoading(true);
       await changePasswordApi(payload);
@@ -100,11 +109,25 @@ export default function AuthProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const value = useMemo(
-    () => ({ user, loading, register, login, changePassword, logout }),
-    [user, loading],
+    () => ({
+      user,
+      loading,
+      handleRegister,
+      handleLogin,
+      handleChangePassword,
+      handleLogout,
+    }),
+    [
+      user,
+      loading,
+      handleRegister,
+      handleLogin,
+      handleChangePassword,
+      handleLogout,
+    ],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

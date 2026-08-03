@@ -16,12 +16,11 @@ import ProfileOverview from "../features/profile/pages/ProfileOverview";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/login" element={<LoginPage />} />
-
       <Route element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="home" element={<HomePage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
         <Route
           path="profile"

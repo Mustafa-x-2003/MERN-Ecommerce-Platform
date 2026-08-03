@@ -22,10 +22,9 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "../ui/drawer";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link} from "react-router";
 export default function NavBare() {
-  const navigate = useNavigate();
-  const { logout, user } = useAuth();
+  const { handleLogout, user } = useAuth();
   const links = [
     { path: "home", title: "Home", icon: <House /> },
     { path: "products", title: "Shop", icon: <Handbag /> },
@@ -86,11 +85,11 @@ export default function NavBare() {
 
                 <Button
                   variant="destructive"
-                  onClick={logout}
+                  onClick={handleLogout}
                   className=" justify-start px-5 bg-transparent! hover:bg-[var(--destructive)]! text-[var(--foreground)] "
                   icon={<LogOut className="size-5" />}
                 >
-                  Logout 
+                  Logout
                 </Button>
               </div>
 
@@ -137,22 +136,18 @@ export default function NavBare() {
           {user ? (
             <Button
               variant="destructive"
-              onClick={logout}
+              onClick={handleLogout}
               className={"px-4 py-2"}
               icon={<LogOut />}
             >
               Logout
             </Button>
           ) : (
-            <Button
-              variant="destructive"
-              onClick={() => {
-                navigate("/login");
-              }}
-              className={"px-4 py-2"}
-            >
-              Login
-            </Button>
+            <Link to="/login">
+              <Button variant="destructive" className={"px-4 py-2"}>
+                Login
+              </Button>
+            </Link>
           )}
         </div>
       </div>
