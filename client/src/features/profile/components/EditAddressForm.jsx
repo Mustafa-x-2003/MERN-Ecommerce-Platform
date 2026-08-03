@@ -1,63 +1,63 @@
-import React, { useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import ProfileForm from "./ProfileForm";
+import { getFormData } from "../utils/address.utils";
 
-export default function EditAddressForm({ address, onSave }) {
-  const [form, setForm] = useState({
-    name: address.name,
-    phone: address.phone,
-    country: address.country,
-    city: address.city,
-    street: address.street,
-    building: address.building,
-    apartment: address.apartment,
-    postalCode: address.postalCode,
-  });
-  const profileFields = [
-    {
-      name: "name",
-      label: "Name",
-      type: "text",
-    },
-    {
-      name: "phone",
-      label: "Phone",
-      type: "text",
-    },
-    {
-      name: "country",
-      label: "Country",
-      type: "text",
-    },
-    {
-      name: "city",
-      label: "City",
-      type: "text",
-    },
-    {
-      name: "street",
-      label: "Street",
-      type: "text",
-    },
-    {
-      name: "building",
-      label: "Building",
-      type: "text",
-    },
-    {
-      name: "apartment",
-      label: "Apartment",
-      type: "text",
-    },
-    {
-      name: "postalCode",
-      label: "PostalCode",
-      type: "text",
-    },
-  ];
+function EditAddressForm({ address, id, onSave }) {
+  const [form, setForm] = useState(getFormData(address));
+
+  useEffect(() => {
+    setForm(getFormData(address));
+  }, [address]);
+
+  const profileFields = useMemo(
+    () => [
+      {
+        name: "name",
+        label: "Name",
+        type: "text",
+      },
+      {
+        name: "phone",
+        label: "Phone",
+        type: "text",
+      },
+      {
+        name: "country",
+        label: "Country",
+        type: "text",
+      },
+      {
+        name: "city",
+        label: "City",
+        type: "text",
+      },
+      {
+        name: "street",
+        label: "Street",
+        type: "text",
+      },
+      {
+        name: "building",
+        label: "Building",
+        type: "text",
+      },
+      {
+        name: "apartment",
+        label: "Apartment",
+        type: "text",
+      },
+      {
+        name: "postalCode",
+        label: "PostalCode",
+        type: "text",
+      },
+    ],
+    [],
+  );
   return (
     <div>
       <ProfileForm
-        id={address._id}
+        id={id}
         fields={profileFields}
         formData={form}
         setFormData={setForm}
@@ -66,3 +66,4 @@ export default function EditAddressForm({ address, onSave }) {
     </div>
   );
 }
+export default memo(EditAddressForm);

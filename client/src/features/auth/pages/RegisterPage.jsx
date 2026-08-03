@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { RegisterForm } from "../components/RegisterForm";
 import { useAuth } from "@/context/AuthContext";
-import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
 
 export default function RegisterPage() {
-  const { register } = useAuth();
-  const navigate = useNavigate();
+  const { handleRegister } = useAuth();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -15,15 +13,15 @@ export default function RegisterPage() {
   });
   async function onSubmit() {
     try {
-      await register(form);
+      await handleRegister(form);
     } catch (error) {
       error.response?.data?.message || "Registration failed";
     }
   }
   return (
-    <div className=" h-screen flex justify-center items-center items-center ">
+    <div className=" h-[calc(100vh-72px)] flex justify-center items-center ">
       <RegisterForm
-        className={"w-full px-4 md:w-150"}
+        className={"w-full  md:w-130"}
         form={form}
         setForm={setForm}
         onSubmit={onSubmit}
