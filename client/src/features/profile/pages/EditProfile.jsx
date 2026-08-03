@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileForm from "../components/ProfileForm";
-import { useAuth } from "@/context/AuthContext";
-import { updateProfile } from "@/features/auth/auth.service";
+// import { useAuth } from "@/context/AuthContext";
+import { getProfile, updateProfile } from "@/features/auth/auth.service";
 import { toast } from "react-toastify";
 
 export default function EditProfile() {
-  const { user } = useAuth();
-  const [form, setForm] = useState({
-    name: user.name,
-    email: user.email,
-    phone: user.phone,
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
   });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+  useEffect(() => {
+    const getdata = async () => {
+      const res = await getProfile();
+      setUser(res.data);
+      setForm({
+        name: res.data.name,
+        email: res.data.email,
+        phone: res.data.phone,
+      });
+    };
+    getdata();
+  }, []);
+
   const profileFields = [
     {
       name: "name",
@@ -39,7 +56,6 @@ export default function EditProfile() {
   }
   return (
     <div>
-      <h2 className="pb-4">Edit Profile</h2>
       <ProfileForm
         fields={profileFields}
         formData={form}

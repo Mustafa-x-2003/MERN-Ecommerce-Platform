@@ -96,9 +96,9 @@ export default function AuthProvider({ children }) {
       toast.success("Password changed successfully");
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to change password");
-      throw error(error);
+      throw error;
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 

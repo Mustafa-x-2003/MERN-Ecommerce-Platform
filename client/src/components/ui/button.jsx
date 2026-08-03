@@ -46,6 +46,7 @@ function Button({
   size = "default",
   onClick,
   children,
+  icon,
 }) {
   return (
     <ButtonPrimitive
@@ -53,7 +54,7 @@ function Button({
       className={cn(buttonVariants({ variant, size, className }))}
       onClick={onClick}
     >
-      {children}
+      {icon ? <span>{icon}</span> : ""} {children}
     </ButtonPrimitive>
   );
 }
