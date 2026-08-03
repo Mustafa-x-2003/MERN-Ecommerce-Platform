@@ -37,3 +37,23 @@ export const getAddresses = async (req, res) => {
     });
   }
 };
+export const deleteAddres = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const address = await Address.findOne({ _id: req.params.id, user: userId });
+    if (!address) {
+      return res.status(404).json({
+        message: "Address not found",
+      });
+    }
+    await address.deleteOne();
+    res.status(200).json({
+      message: "Address deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to delete address",
+      error: error.message,
+    });
+  }
+};
