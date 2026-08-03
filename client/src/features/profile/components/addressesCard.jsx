@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Phone, Pencil, Trash2 } from "lucide-react";
 
-export default function AddressCard({ address }) {
+export default function AddressCard({ address,  onDelete  }) {
   return (
     <Card>
       <CardHeader>
@@ -51,7 +51,7 @@ export default function AddressCard({ address }) {
         <Button
           variant="destructive"
           size="sm"
-          onClick={() => {}}
+          onClick={() => onDelete(address._id)}
         >
           <Trash2 size={16} />
           Delete
