@@ -1,4 +1,4 @@
-import {  getAddress } from "@/features/profile/addresses.servece";
+import { deleteAddress, getAddress } from "@/features/profile/addresses.servece";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
