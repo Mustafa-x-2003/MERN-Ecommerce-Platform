@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 
 export default function HeaderLink({ path, title, icon }) {
   return (
-    <li className="rounded-lg text-[16px] px-2  transition-colors hover:bg-accent hover:text-accent-foreground">
+    <li className="rounded-lg text-[16px]   transition-colors hover:bg-accent hover:text-accent-foreground">
       <NavLink
         to={path}
         className={({ isActive }) =>
@@ -12,7 +12,8 @@ export default function HeaderLink({ path, title, icon }) {
           }`
         }
       >
-        <span className="currentColor">{icon}</span>
+        {icon ? <span className="currentColor">{icon}</span> : ""}
+
         {title}
       </NavLink>
     </li>

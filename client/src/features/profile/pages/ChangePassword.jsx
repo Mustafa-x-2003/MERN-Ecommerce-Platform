@@ -12,15 +12,16 @@ export default function ChangePassword() {
     {
       name: "oldPassword",
       label: "Old Password",
-      type: "text",
+      type: "password",
     },
     {
       name: "newPassword",
       label: "New Password",
-      type: "text",
+      type: "password",
     },
   ];
-  async function changepassword() {
+
+  async function handleChangePassword() {
     try {
       await changePassword(form);
       setForm({
@@ -28,17 +29,16 @@ export default function ChangePassword() {
         newPassword: "",
       });
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data);
     }
   }
   return (
     <div>
-      <h2 className="pb-4">Change Password</h2>
       <ProfileForm
         fields={passwordFields}
         formData={form}
         setFormData={setForm}
-        onSubmit={changepassword}
+        onSubmit={handleChangePassword}
       />
     </div>
   );

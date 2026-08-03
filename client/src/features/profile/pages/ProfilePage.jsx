@@ -1,19 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router";
+import { useAuth } from "@/context/AuthContext";
 
 import {
   Card,
+  CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { getProfile } from "@/features/auth/auth.service";
 import { User, Lock, MapPin, Settings } from "lucide-react";
 
 import { NavLink, Outlet } from "react-router";
 
 export default function ProfilePage() {
+  const [user, setUser] = useState();
+  useEffect(() => {
+    const getdata = async () => {
+      const res = await getProfile();
+      setUser(res.data);
+    };
+    getdata();
+  }, []);
   const links = [
     {
       title: "Profile Overview",
@@ -44,41 +59,57 @@ export default function ProfilePage() {
 
   return (
     <div className=" flex gap-4 justify-between py-10">
-      <Card className="w-full h-fit md:w-auto flex-shrink max-w-md">
-        <CardHeader className="flex flex-col items-center text-center">
-          <Avatar className="h-24 w-24">
-            <AvatarImage src="/avatar.png" />
-            <AvatarFallback>MO</AvatarFallback>
-          </Avatar>
+      <Card className="w-full">
+        {/* Profile Header */}
+        <CardHeader className="flex flex-row items-center justify-between gap-4 p-6">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-20 w-20">
+              <AvatarImage src={user?.avatar} />
 
-          <CardTitle className="mt-4 text-xl">Mostafa Ahmed</CardTitle>
+              <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+            </Avatar>
 
-          <CardDescription>mostafa@gmail.com</CardDescription>
+            <div>
+              <CardTitle className="text-2xl">{user?.name}</CardTitle>
+
+              <Badge className="mt-2">{user?.role}</Badge>
+            </div>
+          </div>
+
+          <Button asChild>
+            <Link to="/profile/edit">Edit Profile</Link>
+          </Button>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-2">
-          {links.map((link) => (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              className={({ isActive }) =>
-                `flex items-center gap-3 rounded-lg px-4 py-3 transition-colors
+        <Separator />
+
+        {/* User Information */}
+        <CardContent className="p-6 flex justify-between gap-5">
+          
+          <div>
+            {links.map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 mb-2 rounded-lg px-4 py-3 transition-colors
                 ${
                   isActive
                     ? "bg-primary text-primary-foreground"
                     : "hover:bg-muted"
                 }`
-              }
-            >
-              {link.icon}
-              <span>{link.title}</span>
-            </NavLink>
-          ))}
+                }
+              >
+                {link.icon}
+                <span>{link.title}</span>
+              </NavLink>
+            ))}
+          </div>
+          <div className="  flex-1">
+            <Outlet />
+          </div>
         </CardContent>
       </Card>
-      <div className="  flex-1">
-        <Outlet />
-      </div>
     </div>
   );
 }

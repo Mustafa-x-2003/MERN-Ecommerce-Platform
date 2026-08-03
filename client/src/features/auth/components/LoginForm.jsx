@@ -64,7 +64,7 @@ export default function LoginForm({ className, onSubmit, form, setForm }) {
                 />
               </Field>
               <Field>
-                <Button onClick={onSubmit} className="w-full" type="submit">
+                <Button onClick={onSubmit} className="w-full" >
                   Login
                 </Button>
                 <Button variant="outline" type="button">

@@ -10,6 +10,7 @@ import { TextAlignJustify } from "lucide-react";
 import { House } from "lucide-react";
 import { Handbag } from "lucide-react";
 import { ClipboardList } from "lucide-react";
+import { LogOut } from "lucide-react";
 // End Import Icons
 import {
   Drawer,
@@ -23,7 +24,7 @@ import {
 } from "../ui/drawer";
 import { Link, NavLink, useNavigate } from "react-router";
 export default function NavBare() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { logout, user } = useAuth();
   const links = [
     { path: "home", title: "Home", icon: <House /> },
@@ -57,25 +58,28 @@ export default function NavBare() {
               <ul className="  flex flex-col pt-5 py-3   gap-2">
                 {links.map((link) => {
                   return (
-                    <HeaderLink
-                      key={link.path}
-                      path={link.path}
-                      title={link.title}
-                      icon={link.icon}
-                    />
+                    <DrawerClose key={link.title}>
+                      <HeaderLink
+                        key={link.path}
+                        path={link.path}
+                        title={link.title}
+                        icon={link.icon}
+                      />
+                    </DrawerClose>
                   );
                 })}
               </ul>
-              <div className="flex flex-1 border-t border-border pt-3 flex-col justify-between">
+              <div className="flex border-t border-border pt-3 flex-col ">
                 <ul className="flex flex-col gap-2 ">
                   {icons.map((item) => {
                     return (
-                      <HeaderLink
-                        key={item.title}
-                        path={item.path}
-                        title={item.title}
-                        icon={item.icon}
-                      />
+                      <DrawerClose key={item.title}>
+                        <HeaderLink
+                          path={item.path}
+                          title={item.title}
+                          icon={item.icon}
+                        />
+                      </DrawerClose>
                     );
                   })}
                 </ul>
@@ -83,9 +87,10 @@ export default function NavBare() {
                 <Button
                   variant="destructive"
                   onClick={logout}
-                  className=" mb-4 w-full"
+                  className=" justify-start px-5 bg-transparent! hover:bg-[var(--destructive)]! text-[var(--foreground)] "
+                  icon={<LogOut className="size-5" />}
                 >
-                  Logout
+                  Logout 
                 </Button>
               </div>
 
@@ -134,13 +139,20 @@ export default function NavBare() {
               variant="destructive"
               onClick={logout}
               className={"px-4 py-2"}
-            > Logout </Button>
+              icon={<LogOut />}
+            >
+              Logout
+            </Button>
           ) : (
             <Button
               variant="destructive"
-              onClick={()=>{navigate("/login")}}
+              onClick={() => {
+                navigate("/login");
+              }}
               className={"px-4 py-2"}
-            >Login</Button>
+            >
+              Login
+            </Button>
           )}
         </div>
       </div>
