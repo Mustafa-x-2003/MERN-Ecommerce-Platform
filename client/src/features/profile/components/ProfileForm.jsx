@@ -4,12 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function ProfileForm({
-  title,
   fields,
   formData,
   setFormData,
   onSubmit,
   buttonText = "Save",
+  id,
 }) {
   return (
     <div>
@@ -33,7 +33,11 @@ export default function ProfileForm({
               </div>
             ))}
 
-            <Button onClick={onSubmit} type="submit">
+            <Button
+              onClick={() => {
+                onSubmit(id, formData);
+              }}
+            >
               {buttonText}
             </Button>
           </form>
