@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ProfileForm from "./ProfileForm";
 
-export default function EditAddressForm({ address, onClose ,onSave}) {
+export default function EditAddressForm({ address, onSave }) {
   const [form, setForm] = useState({
     name: address.name,
     phone: address.phone,
@@ -57,6 +57,7 @@ export default function EditAddressForm({ address, onClose ,onSave}) {
   return (
     <div>
       <ProfileForm
+        id={address._id}
         fields={profileFields}
         formData={form}
         setFormData={setForm}

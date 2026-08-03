@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Phone, Pencil, Trash2 } from "lucide-react";
 
-export default function AddressCard({ address,  onDelete  }) {
+export default function AddressCard({ address, onEdit, onDelete  }) {
   return (
     <Card>
       <CardHeader>
@@ -43,7 +43,7 @@ export default function AddressCard({ address,  onDelete  }) {
       </CardContent>
 
       <CardFooter className="flex justify-end gap-2">
-        <Button variant="outline" size="sm" onClick={() => {}}>
+        <Button variant="outline" size="sm" onClick={() => onEdit(address)}>
           <Pencil size={16} />
           Edit
         </Button>

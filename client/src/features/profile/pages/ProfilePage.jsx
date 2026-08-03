@@ -16,7 +16,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getProfile } from "@/features/auth/auth.service";
-import { User, Lock, MapPin, Settings } from "lucide-react";
+import { User, Pencil,Lock, MapPin, Settings } from "lucide-react";
+
 
 import { NavLink, Outlet } from "react-router";
 
@@ -38,7 +39,7 @@ export default function ProfilePage() {
     {
       title: "Edit Profile",
       path: "/profile/edit",
-      icon: <User />,
+      icon: <Pencil />,
     },
     {
       title: "Change Password",
