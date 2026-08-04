@@ -116,35 +116,21 @@ export const setDefaultAddress = async (req, res) => {
       _id: addressID,
       user: userID,
     });
-
     if (!address) {
       return res.status(404).json({
         message: "Address Not Found",
       });
     }
-    const addresses = await Address.find({ user: userID });
-
-    addresses.forEach((item) => {
-      if (item._id.toString() === addressID) {
-        item.isDefault = true;
-      } else {
-        item.isDefault = false;
-      }
-    });
-    await Promise.all(addresses.map((address) => address.save()));
-
-    const updatedAddress = addresses.find(
-      (item) => item._id.toString() === addressID,
+    await Address.updateMany({ user: userID }, { isDefault: false });
+    await Address.findByIdAndUpdate(
+      { _id: addressID, user: userID },
+      { isDefault: true },
     );
-
-    res.status(200).json({
-      message: "",
-      updatedAddress,
-    });
+    res.status(200).json({});
   } catch (error) {
     res.status(500).json({
-      message: "ttttttt",
-      error,
+      message: "Failed to update default address",
+      error: error.message,
     });
   }
 };

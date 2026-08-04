@@ -40,7 +40,6 @@ export default function AuthProvider({ children }) {
     }
   }, []);
 
-
   useEffect(() => {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
@@ -87,6 +86,7 @@ export default function AuthProvider({ children }) {
     try {
       setLoading(true);
       await logoutApi();
+      localStorage.removeItem("token");
       setUser(null);
       toast.success("Logged out successfully");
       navigate("/login");
@@ -97,7 +97,7 @@ export default function AuthProvider({ children }) {
       setLoading(false);
     }
   }, [navigate]);
-  
+
   const handleChangePassword = useCallback(async (payload) => {
     try {
       setLoading(true);
