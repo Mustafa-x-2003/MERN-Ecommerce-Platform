@@ -107,3 +107,44 @@ export const editAddress = async (req, res) => {
     });
   }
 };
+export const setDefaultAddress = async (req, res) => {
+  try {
+    const addressID = req.params.id;
+    const userID = req.user._id;
+
+    const address = await Address.findOne({
+      _id: addressID,
+      user: userID,
+    });
+
+    if (!address) {
+      return res.status(404).json({
+        message: "Address Not Found",
+      });
+    }
+    const addresses = await Address.find({ user: userID });
+
+    addresses.forEach((item) => {
+      if (item._id.toString() === addressID) {
+        item.isDefault = true;
+      } else {
+        item.isDefault = false;
+      }
+    });
+    await Promise.all(addresses.map((address) => address.save()));
+
+    const updatedAddress = addresses.find(
+      (item) => item._id.toString() === addressID,
+    );
+
+    res.status(200).json({
+      message: "",
+      updatedAddress,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "ttttttt",
+      error,
+    });
+  }
+};
