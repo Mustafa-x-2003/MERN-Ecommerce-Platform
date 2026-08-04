@@ -9,9 +9,10 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Phone, Pencil, Trash2 } from "lucide-react";
+import { MapPin, Phone, Pencil, Trash2, Star } from "lucide-react";
+import { IoStar } from "react-icons/io5";
 
-export default function AddressCard({ address, onEdit, onDelete  }) {
+export default function AddressCard({ address,setDefaultAddress, onEdit, onDelete }) {
   return (
     <Card>
       <CardHeader>
@@ -42,20 +43,29 @@ export default function AddressCard({ address, onEdit, onDelete  }) {
         </p>
       </CardContent>
 
-      <CardFooter className="flex justify-end gap-2">
-        <Button variant="outline" size="sm" onClick={() => onEdit(address)}>
-          <Pencil size={16} />
-          Edit
+      <CardFooter className="flex justify-between gap-2">
+        <Button variant="outline" size="sm" onClick={() => {setDefaultAddress(address._id)}}>
+          {address.isDefault ? (
+            <IoStar className="text-yellow-500 " />
+          ) : (
+            <IoStar className="text-stone-600 " />
+          )}
         </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => onEdit(address)}>
+            <Pencil size={16} />
+            Edit
+          </Button>
 
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={() => onDelete(address._id)}
-        >
-          <Trash2 size={16} />
-          Delete
-        </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => onDelete(address._id)}
+          >
+            <Trash2 size={16} />
+            Delete
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

@@ -16,8 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getProfile } from "@/features/auth/auth.service";
-import { User, Pencil,Lock, MapPin, Settings } from "lucide-react";
-
+import { User, Pencil, Lock, MapPin, Settings } from "lucide-react";
 
 import { NavLink, Outlet } from "react-router";
 
@@ -85,15 +84,14 @@ export default function ProfilePage() {
         <Separator />
 
         {/* User Information */}
-        <CardContent className="p-6 flex justify-between gap-5">
-          
-          <div>
+        <CardContent className="p-6 flex flex-col sm:flex-row justify-between gap-5">
+          <div className=" flex items-center justify-between sm:block">
             {links.map((link) => (
               <NavLink
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 mb-2 rounded-lg px-4 py-3 transition-colors
+                  `flex items-center gap-3 mb-2 rounded-lg px-2 md:px-4 py-3 transition-colors
                 ${
                   isActive
                     ? "bg-primary text-primary-foreground"
@@ -102,7 +100,7 @@ export default function ProfilePage() {
                 }
               >
                 {link.icon}
-                <span>{link.title}</span>
+                <span className=" hidden sm:block">{link.title}</span>
               </NavLink>
             ))}
           </div>

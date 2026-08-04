@@ -16,7 +16,7 @@ import {
   DialogTitle,
   // DialogTrigger,
 } from "../../../components/ui/dialog";
-import EditAddressForm from "../components/EditAddressForm";
+import EditAddressForm from "../components/AddressForm";
 import { useAddresses } from "../../../context/addressesContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,7 @@ function Addresses() {
     fetchAddresses,
     setAddresses,
     handleDelete,
+    handlesetDefaultAddress,
   } = useAddresses();
 
   const handleOpenEditDialog = useCallback((address) => {
@@ -41,32 +42,29 @@ function Addresses() {
   }, []);
   const handleDeleteAddress = useCallback(
     async (id) => {
-      try {
-        await handleDelete(id);
-        await fetchAddresses();
-        toast.success("Address Deleted successfully");
-      } catch (error) {
-        toast.error("Address Deleted Error");
-      }
+      await handleDelete(id);
     },
-    [handleDelete, fetchAddresses],
+    [handleDelete],
   );
 
   const onSave = useCallback(
     async (id, payload) => {
       if (!selectedAddress) {
         await handleAdd(payload);
-        await fetchAddresses();
-        toast.success("Address Added successfully");
         setOpen(false);
       } else {
         await handleUpdate(id, payload);
-        await fetchAddresses();
-        toast.success("Address updated successfully");
         setOpen(false);
       }
     },
-    [selectedAddress, handleAdd, fetchAddresses, handleUpdate],
+    [selectedAddress, handleAdd, handleUpdate],
+  );
+
+  const setDefaultAddress = useCallback(
+    async (id) => {
+      await handlesetDefaultAddress(id);
+    },
+    [handlesetDefaultAddress],
   );
 
   return (
@@ -109,6 +107,7 @@ function Addresses() {
               <AddressCard
                 key={address._id}
                 address={address}
+                setDefaultAddress={setDefaultAddress}
                 onEdit={handleOpenEditDialog}
                 onDelete={handleDeleteAddress}
               />
