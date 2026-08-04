@@ -6,15 +6,9 @@ import { toast } from "react-toastify";
 import AddressCard from "../components/addressesCard";
 import {
   Dialog,
-  // DialogClose,
   DialogContent,
-  // DialogDescription,
-  // DialogFooter,
   DialogHeader,
-  // DialogOverlay,
-  // DialogPortal,
   DialogTitle,
-  // DialogTrigger,
 } from "../../../components/ui/dialog";
 import EditAddressForm from "../components/AddressForm";
 import { useAddresses } from "../../../context/addressesContext";
@@ -29,8 +23,6 @@ function Addresses() {
     handleAdd,
     handleUpdate,
     loading,
-    fetchAddresses,
-    setAddresses,
     handleDelete,
     handlesetDefaultAddress,
   } = useAddresses();

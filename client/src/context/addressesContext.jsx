@@ -8,14 +8,18 @@ import {
   setDefaultAddress,
 } from "@/features/profile/addresses.servece";
 import { toast } from "react-toastify";
+import { useAuth } from "./AuthContext";
 
 const AddressContext = createContext();
 
 export default function AddressProvider({ children }) {
+  
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
   const fetchAddresses = useCallback(async () => {
+    if (!user) return;
     setLoading(true);
 
     try {
@@ -27,13 +31,10 @@ export default function AddressProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user, setLoading]);
 
   useEffect(() => {
-    const call = async () => {
-      await fetchAddresses();
-    };
-    call();
+    fetchAddresses();
   }, [fetchAddresses]);
 
   const handleAdd = useCallback(
