@@ -68,3 +68,20 @@ export const addToCart = async (req, res) => {
     });
   }
 };
+export const getCart = async (req, res) => {
+  try {
+    const user = req.user;
+    const cart = await Cart.findOne({ user: user._id }).populate("products.product");
+    const cartItems = cart?.products || [];
+    res.status(200).json({
+      success: true,
+      cartItems,
+    });
+  } catch (error) {
+    res.status(500).json({
+    success: false,
+    message: "Failed to retrieve cart data",
+    error: error.message,
+  });
+  }
+};
