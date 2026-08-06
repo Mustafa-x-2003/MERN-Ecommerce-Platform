@@ -28,3 +28,22 @@ export const createCategory = async (req, res) => {
     });
   }
 };
+export const getCategory = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.status(200).json({
+      success: true,
+      message: "Categories retrieved successfully",
+      categories: categories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong while fetching categories",
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        error: error.message,
+      },
+    });
+  }
+};
