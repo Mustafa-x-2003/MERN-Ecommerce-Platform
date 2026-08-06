@@ -4,10 +4,10 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: async (req, res) => {
-    folder: "products";
-    allowed_formats: ["jpg", "jpeg", "png", "webp"];
-  },
+  params: async (req, res) => ({
+    folder: "products",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+  }),
 });
 
 const upload = multer({ storage });
