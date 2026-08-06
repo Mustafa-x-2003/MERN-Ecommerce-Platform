@@ -6,6 +6,7 @@ import routerUser from "./router/userRouter.js";
 import routerAddress from "./router/addressRouter.js";
 import routerProduct from "./router/productsRouter.js";
 import cartRouter from "./router/cartRouter.js";
+import categoryRouter from "./router/categoryRouter.js";
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -14,6 +15,7 @@ app.use("/api/auth", routerUser);
 app.use("/api/address", routerAddress);
 app.use("/api/products", routerProduct);
 app.use("/api/cart", cartRouter);
+app.use("/api/category", categoryRouter);
 
 
 
