@@ -15,15 +15,43 @@ export const createProduct = async (req, res) => {
     });
   }
 };
-
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const { name, category, minPrice, maxPrice } = req.query;
+
+    const filter = {};
+
+    if (name) {
+      filter.name = {
+        $regex: name,
+        $options: "i",
+      };
+    }
+
+    if (category) {
+      filter.category = category;
+    }
+
+    if (minPrice || maxPrice) {
+      filter.price = {};
+
+      if (minPrice) {
+        filter.price.$gte = Number(minPrice);
+      }
+
+      if (maxPrice) {
+        filter.price.$lte = Number(maxPrice);
+      }
+    }
+
+    const products = await Product.find(filter);
+
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({
-      message: "error",
+      message: "Error fetching products",
       error: error.message,
     });
   }
 };
+
