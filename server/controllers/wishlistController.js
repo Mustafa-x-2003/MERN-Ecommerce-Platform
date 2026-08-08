@@ -53,3 +53,19 @@ export const addToWishlist = async (req, res) => {
     console.log(error);
   }
 };
+export const getWishlist = async (req, res) => {
+  try {
+    const user = req.user;
+    const wishlist = await Wishlist.findOne({ user: user._id }).populate("products");
+    res.status(200).json({
+      success: true,
+      products: wishlist.products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "",
+    });
+    console.log(error);
+  }
+};
