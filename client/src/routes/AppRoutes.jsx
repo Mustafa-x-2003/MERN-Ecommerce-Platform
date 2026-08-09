@@ -12,6 +12,10 @@ import ChangePassword from "@/features/profile/pages/ChangePassword";
 import Addresses from "../features/profile/pages/Addresses";
 import Settings from "../features/profile/pages/Settings";
 import ProfileOverview from "../features/profile/pages/ProfileOverview";
+import ProductsPage from "@/features/products/pages/ProductsPage";
+import CartPage from "@/features/cart/pages/CartPage";
+import WishlistPage from "@/features/wishlist/pages/WishlistPage";
+// import ProductsPage from "../features/products/pages/Product";
 
 export default function AppRoutes() {
   return (
@@ -19,8 +23,25 @@ export default function AppRoutes() {
       <Route element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="home" element={<HomePage />} />
+        <Route path="/products" element={<ProductsPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <CartPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/wishlist"
+          element={
+            <ProtectedRoute>
+              <WishlistPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="profile"

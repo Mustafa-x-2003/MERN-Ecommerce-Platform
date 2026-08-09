@@ -3,14 +3,18 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "../ui/button";
 import HeaderLink from "./HeaderLink";
 // Start Import Icons
-import { Heart } from "lucide-react";
-import { ShoppingCart } from "lucide-react";
-import { UserRound } from "lucide-react";
-import { TextAlignJustify } from "lucide-react";
-import { House } from "lucide-react";
-import { Handbag } from "lucide-react";
-import { ClipboardList } from "lucide-react";
-import { LogOut } from "lucide-react";
+import {
+  Heart,
+  Search,
+  ShoppingCart,
+  UserRound,
+  TextAlignJustify,
+  House,
+  Handbag,
+  ClipboardList,
+  LogOut,
+} from "lucide-react";
+
 // End Import Icons
 import {
   Drawer,
@@ -22,7 +26,11 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "../ui/drawer";
-import { Link} from "react-router";
+import { Link } from "react-router";
+import { useProduct } from "@/context/productContext";
+import { Input } from "../ui/input";
+import { useCart } from "@/context/cartContext";
+import { useWishlist } from "@/context/wishlistContext";
 export default function NavBare() {
   const { handleLogout, user } = useAuth();
   const links = [
@@ -30,11 +38,30 @@ export default function NavBare() {
     { path: "products", title: "Shop", icon: <Handbag /> },
     { path: "orders", title: "My Orders", icon: <ClipboardList /> },
   ];
+  const { search, setSearch } = useProduct();
+  const { cart } = useCart();
+  const { wishlist } = useWishlist();
+
   const icons = [
-    { path: "/wishlist", title: "Wishlist", icon: <Heart /> },
-    { path: "/cart", title: "Cart", icon: <ShoppingCart /> },
-    { path: "/profile/overview", title: "Profile", icon: <UserRound /> },
+    {
+      path: "/wishlist",
+      title: "Wishlist",
+      icon: <Heart />,
+      length: wishlist?.length,
+    },
+    {
+      path: "/cart",
+      title: "Cart",
+      icon: <ShoppingCart />,
+      length: cart?.length,
+    },
+    {
+      path: "/profile/overview",
+      title: "Profile",
+      icon: <UserRound />,
+    },
   ];
+
   return (
     <header className="w-full fixed top-0 z-1000 border-b border-border bg-background py-4">
       <div className="container mx-auto flex h-10 items-center justify-between px-4">
@@ -120,15 +147,36 @@ export default function NavBare() {
         </ul>
 
         <div className="hidden md:flex  items-center gap-8">
+          <div className="hidden lg:flex relative items-center">
+            <Input
+              value={search.name}
+              className={"h-10 px-3"}
+              onChange={(e) => {
+                setSearch({ ...search, name: e.target.value });
+              }}
+              id="name"
+              type="text"
+              placeholder="Search..."
+              required
+            />
+            <span className=" absolute right-3">
+              <Search size={18} />
+            </span>
+          </div>
           <div className="flex items-center gap-4">
             {icons.map((item) => {
               return (
                 <Link
                   to={item.path}
                   key={item.title}
-                  className="cursor-pointer text-foreground transition-colors hover:text-primary"
+                  className=" relative cursor-pointer text-foreground transition-colors hover:text-primary"
                 >
                   {item.icon}
+                  {item.length > 0 && (
+                    <span className=" absolute w-4 h-4 rounded-full flex justify-center items-center text-[12px] -top-2 -right-2 bg-amber-600">
+                      {item.length}
+                    </span>
+                  )}
                 </Link>
               );
             })}
