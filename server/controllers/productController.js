@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Product from "../models/productModel.js";
 export const createProduct = async (req, res) => {
   try {
@@ -55,3 +56,31 @@ export const getProducts = async (req, res) => {
   }
 };
 
+export const getProduct = async (req, res) => {
+  try {
+    const productID = req.params.id;
+    if (!productID || !mongoose.Types.ObjectId.isValid(productID)) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid product ID",
+      });
+    }
+    const product = await Product.findById(productID);
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
