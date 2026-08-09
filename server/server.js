@@ -8,6 +8,7 @@ import routerProduct from "./router/productsRouter.js";
 import cartRouter from "./router/cartRouter.js";
 import categoryRouter from "./router/categoryRouter.js";
 import wishlistRouter from "./router/wishlistRouter.js";
+import orderRouter from "./router/orderRouter.js";
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -18,6 +19,7 @@ app.use("/api/products", routerProduct);
 app.use("/api/cart", cartRouter);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/orders", orderRouter);
 
 
 
