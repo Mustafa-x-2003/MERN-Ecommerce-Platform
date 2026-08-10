@@ -1,24 +1,20 @@
-import Oreder from "../models/orderModel.js";
+import Order from "../models/orderModel.js";
 import Cart from "../models/cartModel.js";
 import Product from "../models/productModel.js";
 import mongoose from "mongoose";
 
 export const createOrder = async (req, res) => {
-  const session = await mongoose.startSession();
   try {
-    session.startTransaction();
-    const cart = await Cart.findOne({ user: req.user._id })
-      .populate("products.product")
-      .session(session);
+    const cart = await Cart.findOne({ user: req.user._id }).populate(
+      "products.product",
+    );
     if (!cart) {
-      await session.abortTransaction();
       return res.status(404).json({
         success: false,
         message: "Cart not found",
       });
     }
     if (cart.products.length === 0) {
-      await session.abortTransaction();
       return res.status(400).json({
         success: false,
         message: "Cannot create an order from an empty cart",
@@ -29,7 +25,6 @@ export const createOrder = async (req, res) => {
       return product.product && product.product.stock >= product.quantity;
     });
     if (!allItemsInStock) {
-      await session.abortTransaction();
       return res.status(400).json({
         success: false,
         message: "One or more products are out of stock",
@@ -48,7 +43,7 @@ export const createOrder = async (req, res) => {
       });
     });
 
-    const order = new Oreder({
+    const order = new Order({
       user: req.user._id,
       items,
       shippingAddress: {
@@ -62,33 +57,31 @@ export const createOrder = async (req, res) => {
       totalPrice,
     });
 
-    await order.save({ session });
+    await order.save();
     for (const item of productsCart) {
-      await item.product.save({ session });
+      await item.product.save();
     }
     cart.products = [];
 
-    await cart.save({ session });
-    await session.commitTransaction();
+    await cart.save();
+
     return res.status(201).json({
       success: true,
       message: "Order created successfully",
       order,
     });
   } catch (error) {
-    await session.abortTransaction();
     console.log(error);
     return res.status(500).json({
       success: false,
       message: "Failed to create order",
     });
-  } finally {
-    await session.endSession();
   }
 };
+
 export const getOrders = async (req, res) => {
   try {
-    const orders = await Oreder.find({ user: req.user._id });
+    const orders = await Order.find({ user: req.user._id });
     res.status(200).json({
       success: true,
       orders,
@@ -99,6 +92,35 @@ export const getOrders = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to fetch orders",
+    });
+  }
+};
+export const getOrder = async (req, res) => {
+  try {
+    const orderID = req.params.id;
+    if (!orderID || !mongoose.Types.ObjectId.isValid(orderID)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid order ID",
+      });
+    }
+    const order = await Order.findOne({ _id: orderID, user: req.user._id });
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    console.error("Get order error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch order",
     });
   }
 };
