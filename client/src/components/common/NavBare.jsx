@@ -5,7 +5,7 @@ import HeaderLink from "./HeaderLink";
 // Start Import Icons
 import {
   Heart,
-  Search,
+  
   ShoppingCart,
   UserRound,
   TextAlignJustify,
@@ -27,7 +27,7 @@ import {
   DrawerDescription,
 } from "../ui/drawer";
 import { Link } from "react-router";
-import { useProduct } from "@/context/productContext";
+// import { useProduct } from "@/context/productContext";
 import { Input } from "../ui/input";
 import { useCart } from "@/context/cartContext";
 import { useWishlist } from "@/context/wishlistContext";
@@ -38,7 +38,7 @@ export default function NavBare() {
     { path: "products", title: "Shop", icon: <Handbag /> },
     { path: "orders", title: "My Orders", icon: <ClipboardList /> },
   ];
-  const { search, setSearch } = useProduct();
+  ;
   const { cart } = useCart();
   const { wishlist } = useWishlist();
 
@@ -147,22 +147,7 @@ export default function NavBare() {
         </ul>
 
         <div className="hidden md:flex  items-center gap-8">
-          <div className="hidden lg:flex relative items-center">
-            <Input
-              value={search.name}
-              className={"h-10 px-3"}
-              onChange={(e) => {
-                setSearch({ ...search, name: e.target.value });
-              }}
-              id="name"
-              type="text"
-              placeholder="Search..."
-              required
-            />
-            <span className=" absolute right-3">
-              <Search size={18} />
-            </span>
-          </div>
+          
           <div className="flex items-center gap-4">
             {icons.map((item) => {
               return (

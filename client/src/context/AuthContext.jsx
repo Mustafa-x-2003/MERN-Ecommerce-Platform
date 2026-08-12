@@ -12,6 +12,7 @@ import {
   getProfile,
   logout as logoutApi,
   changePasswordApi,
+  updateProfile,
 } from "../features/auth/auth.service";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
@@ -99,7 +100,9 @@ export default function AuthProvider({ children }) {
   }, [navigate]);
 
   const handleChangePassword = useCallback(async (payload) => {
+    console.log(payload);
     try {
+
       setLoading(true);
       await changePasswordApi(payload);
       toast.success("Password changed successfully");
@@ -110,7 +113,19 @@ export default function AuthProvider({ children }) {
       setLoading(false);
     }
   }, []);
-
+  const editProfile = useCallback(
+    async (payload) => {
+      try {
+        await updateProfile(payload);
+        toast.success("Profile updated successfully");
+        await fetchCurrentUser();
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Something went wrong");
+        console.log(error);
+      }
+    },
+    [fetchCurrentUser],
+  );
   const value = useMemo(
     () => ({
       user,
@@ -119,6 +134,7 @@ export default function AuthProvider({ children }) {
       handleLogin,
       handleChangePassword,
       handleLogout,
+      editProfile,
     }),
     [
       user,
@@ -127,6 +143,7 @@ export default function AuthProvider({ children }) {
       handleLogin,
       handleChangePassword,
       handleLogout,
+      editProfile,
     ],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

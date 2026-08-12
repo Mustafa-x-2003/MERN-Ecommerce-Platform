@@ -31,7 +31,7 @@ export const getAddresses = async (req, res) => {
     });
   }
 };
-export const deleteAddres = async (req, res) => {
+export const deleteAddress = async (req, res) => {
   try {
     const userId = req.user._id;
     const address = await Address.findOne({ _id: req.params.id, user: userId });
@@ -131,6 +131,28 @@ export const setDefaultAddress = async (req, res) => {
     res.status(500).json({
       message: "Failed to update default address",
       error: error.message,
+    });
+  }
+};
+export const getDefaultAddress = async (req, res) => {
+  try {
+    const user = req.user._id;
+    const defaultAddress = await Address.findOne({ user, isDefault: true });
+    if (!defaultAddress) {
+      return res.status(404).json({
+        success: false,
+        message: "Address not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      defaultAddress,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch default address",
     });
   }
 };

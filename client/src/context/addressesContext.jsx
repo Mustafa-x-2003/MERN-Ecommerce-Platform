@@ -3,9 +3,10 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   addAddress,
   getAddress,
+  getDefaultAddress,
   updateAddress,
   deleteAddress,
-  setDefaultAddress,
+  setDefaultAddress as setDefaultAddressApi,
 } from "@/features/profile/addresses.servece";
 import { toast } from "react-toastify";
 import { useAuth } from "./AuthContext";
@@ -13,8 +14,8 @@ import { useAuth } from "./AuthContext";
 const AddressContext = createContext();
 
 export default function AddressProvider({ children }) {
-  
   const [addresses, setAddresses] = useState([]);
+  const [defaultAddress, setDefaultAddress] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
@@ -79,10 +80,21 @@ export default function AddressProvider({ children }) {
     [fetchAddresses],
   );
 
+  const handleGetDefaultAddress = useCallback(async () => {
+    try {
+      const res = await getDefaultAddress();
+      setDefaultAddress(res.data.defaultAddress);
+    } catch (error) {
+      console.log(error);
+
+      throw error;
+    }
+  }, []);
+
   const handlesetDefaultAddress = useCallback(
     async (id) => {
       try {
-        await setDefaultAddress(id);
+        await setDefaultAddressApi(id);
         await fetchAddresses();
         toast.success("Default address updated");
       } catch (error) {
@@ -96,9 +108,11 @@ export default function AddressProvider({ children }) {
   const value = useMemo(
     () => ({
       addresses,
+      defaultAddress,
       setAddresses,
       loading,
       fetchAddresses,
+      handleGetDefaultAddress,
       handleAdd,
       handleDelete,
       handleUpdate,
@@ -106,7 +120,9 @@ export default function AddressProvider({ children }) {
     }),
     [
       addresses,
+      defaultAddress,
       fetchAddresses,
+      handleGetDefaultAddress,
       handleAdd,
       handleDelete,
       handleUpdate,

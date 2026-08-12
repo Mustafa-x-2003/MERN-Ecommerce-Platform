@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 import { FaXTwitter, FaFacebookF } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
+import { Button } from "../ui/button";
 
 export default function Footer() {
   const sections = [
@@ -39,15 +40,7 @@ export default function Footer() {
                 <Link
                   key={index}
                   to="#"
-                  className="
-                  flex h-10 w-10 items-center justify-center
-                  rounded-full border bg-background
-                  text-muted-foreground
-                  transition-all
-                  hover:-translate-y-1
-                  hover:text-foreground
-                  hover:shadow-md
-                  "
+                  className=" flex h-10 w-10 items-center justify-center rounded-full border bg-background text-muted-foreground transition-all hover:-translate-y-1 hover:text-foreground hover:shadow-md "
                 >
                   <Icon size={18} />
                 </Link>
@@ -66,24 +59,13 @@ export default function Footer() {
                   <li key={link}>
                     <Link
                       to="#"
-                      className="
-                      group flex items-center gap-2
-                      text-sm text-muted-foreground
-                      transition
-                      hover:text-foreground
-                      "
+                      className=" group flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground "
                     >
                       <span>{link}</span>
 
                       <ArrowRight
                         size={14}
-                        className="
-                        opacity-0
-                        -translate-x-2
-                        transition
-                        group-hover:opacity-100
-                        group-hover:translate-x-0
-                        "
+                        className=" opacity-0 -translate-x-2 transiti group-hover:opacity-100  group-hover:translate-x-0  "
                       />
                     </Link>
                   </li>
@@ -95,18 +77,8 @@ export default function Footer() {
 
         {/* Newsletter */}
 
-        <div
-          className="
-          mt-14 flex flex-col gap-4
-          rounded-2xl border
-          bg-background
-          p-6
-          md:flex-row
-          md:items-center
-          md:justify-between
-          "
-        >
-          <div>
+        <div className="  mt-14 flex flex-col gap-4 rounded-2xl border bg-background p-6 md:flex-row md:items-center md:justify-between ">
+          <div className="">
             <h3 className="font-semibold">Stay updated</h3>
 
             <p className="text-sm text-muted-foreground">
@@ -114,25 +86,18 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex w-full max-w-md">
-            <input
-              placeholder="Enter your email"
-              className="
-              h-11 flex-1 rounded-l-lg
-              border bg-background px-4
-              text-sm outline-none
-              "
-            />
-
-            <button
-              className="
-              rounded-r-lg
-              bg-primary px-5
-              text-primary-foreground
-              "
-            >
-              Subscribe
-            </button>
+          <div className="flex   w-full md:w-fit flex-col md:flex-row items-center  gap-2  ">
+            <div className=" w-full md:w-fit">
+              <input
+                placeholder="Enter your email"
+                className="  h-11  rounded-lg  border bg-backg p-4  w-full md:w-auto text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50  "
+              />
+            </div>
+            <div className=" w-full md:w-fit">
+              <Button className="rounded-r-lg bg-primary w-full px-5 text-primary-foreground ">
+                Subscribe
+              </Button>
+            </div>
           </div>
         </div>
 

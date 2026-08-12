@@ -4,13 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { memo } from "react";
 
- function ProfileForm({
+function ProfileForm({
   fields,
   formData,
   setFormData,
   onSubmit,
   buttonText = "Save",
-  id,
+  id
 }) {
   return (
     <div>
@@ -36,8 +36,6 @@ import { memo } from "react";
 
             <Button
               onClick={() => {
-                console.log(formData, "formdata");
-
                 onSubmit(id, formData);
               }}
             >

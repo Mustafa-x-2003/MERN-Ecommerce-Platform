@@ -2,7 +2,9 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
-
+html {
+  scroll-behavior: smooth;
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

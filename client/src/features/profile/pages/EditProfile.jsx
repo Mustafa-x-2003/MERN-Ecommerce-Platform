@@ -1,28 +1,27 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ProfileForm from "../components/ProfileForm";
 // import { useAuth } from "@/context/AuthContext";
-import { getProfile, updateProfile } from "@/features/auth/auth.service";
 import { toast } from "react-toastify";
+import { useAuth } from "@/context/AuthContext";
 
 export default function EditProfile() {
+  const { editProfile, user } = useAuth();
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
   });
   useEffect(() => {
-    const getdata = async () => {
-      const res = await getProfile();
-
-      setForm({
-        name: res.data.name,
-        email: res.data.email,
-        phone: res.data.phone,
-      });
-    };
-    getdata();
-  }, []);
-
+    if (!user) return;
+    setForm({
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+    });
+  }, [user]);
+  const handleUpdatUser = useCallback(() => {
+    editProfile(form);
+  }, [editProfile, form]);
   const profileFields = useMemo(
     () => [
       {
@@ -43,22 +42,14 @@ export default function EditProfile() {
     ],
     [],
   );
-  async function editProfile() {
-    try {
-      await updateProfile(form);
-      toast.success("Profile updated successfully");
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong");
-      console.log(error);
-    }
-  }
+
   return (
     <div>
       <ProfileForm
         fields={profileFields}
         formData={form}
         setFormData={setForm}
-        onSubmit={editProfile}
+        onSubmit={handleUpdatUser}
       />
     </div>
   );
