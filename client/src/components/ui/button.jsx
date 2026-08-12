@@ -47,12 +47,14 @@ function Button({
   onClick,
   children,
   icon,
+  disabled
 }) {
   return (
     <ButtonPrimitive
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       onClick={onClick}
+      disabled={disabled}
     >
       {icon ? <span>{icon}</span> : ""} {children}
     </ButtonPrimitive>

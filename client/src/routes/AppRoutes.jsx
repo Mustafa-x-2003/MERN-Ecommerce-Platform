@@ -15,7 +15,11 @@ import ProfileOverview from "../features/profile/pages/ProfileOverview";
 import ProductsPage from "@/features/products/pages/ProductsPage";
 import CartPage from "@/features/cart/pages/CartPage";
 import WishlistPage from "@/features/wishlist/pages/WishlistPage";
-// import ProductsPage from "../features/products/pages/Product";
+import ProductDetails from "@/features/products/pages/ProductDetails";
+import Orderspage from "@/features/orders/pages/Orderspage";
+import OrderDetails from "@/features/orders/pages/OrderDetails";
+import CheckoutPage from "@/features/checkout/pages/CheckoutPage";
+import OrderSuccessPage from "@/features/successfuly/pages/SuccessfulyPage";
 
 export default function AppRoutes() {
   return (
@@ -23,9 +27,51 @@ export default function AppRoutes() {
       <Route element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="home" element={<HomePage />} />
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="products" element={<ProductsPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route
+          path="orders"
+          element={
+            <ProtectedRoute>
+              <Orderspage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="checkout"
+          element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="success/:id"
+          element={
+            <ProtectedRoute>
+              <OrderSuccessPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="orderDetails/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="productDetails/:id"
+          element={
+            <ProtectedRoute>
+              <ProductDetails />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/cart"
           element={

@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 
 export default function ChangePassword() {
-  const { changePassword } = useAuth();
+  const { handleChangePassword } = useAuth();
   const [form, setForm] = useState({
     oldPassword: "",
     newPassword: "",
@@ -22,9 +22,9 @@ export default function ChangePassword() {
     },
   ];
 
-  async function handleChangePassword() {
+  async function ChangePassword() {
     try {
-      await changePassword(form);
+      await handleChangePassword(form);
       setForm({
         oldPassword: "",
         newPassword: "",
@@ -39,7 +39,7 @@ export default function ChangePassword() {
         fields={passwordFields}
         formData={form}
         setFormData={setForm}
-        onSubmit={handleChangePassword}
+        onSubmit={ChangePassword}
       />
     </div>
   );
