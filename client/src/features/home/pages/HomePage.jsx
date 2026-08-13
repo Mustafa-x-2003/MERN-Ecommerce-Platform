@@ -75,7 +75,7 @@ export default function Home() {
               Browse our products and discover something perfect for you.
             </p>
 
-            <Button asChild size="lg" className="mt-7 w-full md:w-auto">
+            <Button asChild size="lg" className="mt-7 w-full md:w-autocd">
               <Link to="/products" className="flex  items-center">
                 Start Shopping
                 <ArrowRight className="ml-2 h-4 w-4" />

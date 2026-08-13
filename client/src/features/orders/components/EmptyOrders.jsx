@@ -9,8 +9,8 @@ export default function EmptyOrders() {
   const navigate = useNavigate();
 
   return (
-    <main className="min-h-screen bg-background px-4 py-12 sm:py-16">
-      <div className="mx-auto flex max-w-3xl items-center justify-center">
+    <main className="min-h-screen bg-background px-4 py-10 lg:px-0">
+      <div className="mx-auto flex items-center justify-center">
         <Card className="w-full overflow-hidden border-border shadow-sm">
           <CardContent className="flex flex-col items-center px-6 py-14 text-center sm:px-10 sm:py-20">
             {/* Orders Icon */}

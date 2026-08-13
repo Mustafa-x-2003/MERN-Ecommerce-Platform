@@ -21,18 +21,21 @@ app.use("/api/wishlist", wishlistRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/orders", orderRouter);
 
-
-
-
 app.get("/", async (req, res) => {
   res.send("API Working");
 });
 
-app.listen(port, async () => {
+const startServer = async () => {
   try {
     await concetDB();
-    console.log(`server is running on port ${port}`);
-  } catch (e) {
-    console.log(e);
+
+    app.listen(port, () => {
+      console.log(`server is running on port ${port}`);
+    });
+  } catch (error) {
+    console.error("Database connection failed:", error.message);
+    process.exit(1);
   }
-});
+};
+
+startServer()

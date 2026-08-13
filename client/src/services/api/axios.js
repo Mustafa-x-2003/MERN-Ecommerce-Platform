@@ -22,10 +22,10 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       localStorage.removeItem("token");
     }
     return Promise.reject(error);
   },
 );
-export default api
+export default api;
