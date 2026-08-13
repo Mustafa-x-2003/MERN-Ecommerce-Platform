@@ -5,7 +5,6 @@ import HeaderLink from "./HeaderLink";
 // Start Import Icons
 import {
   Heart,
-  
   ShoppingCart,
   UserRound,
   TextAlignJustify,
@@ -13,6 +12,7 @@ import {
   Handbag,
   ClipboardList,
   LogOut,
+  LogIn,
 } from "lucide-react";
 
 // End Import Icons
@@ -38,7 +38,6 @@ export default function NavBare() {
     { path: "products", title: "Shop", icon: <Handbag /> },
     { path: "orders", title: "My Orders", icon: <ClipboardList /> },
   ];
-  ;
   const { cart } = useCart();
   const { wishlist } = useWishlist();
 
@@ -65,6 +64,7 @@ export default function NavBare() {
   return (
     <header className="w-full fixed top-0 z-1000 border-b border-border bg-background py-4">
       <div className="container mx-auto flex h-10 items-center justify-between px-4">
+        {/* Drawer */}
         <span className="md:hidden">
           <Drawer swipeDirection="left">
             <DrawerTrigger>
@@ -90,6 +90,7 @@ export default function NavBare() {
                         path={link.path}
                         title={link.title}
                         icon={link.icon}
+
                       />
                     </DrawerClose>
                   );
@@ -104,20 +105,37 @@ export default function NavBare() {
                           path={item.path}
                           title={item.title}
                           icon={item.icon}
+                          length={item.length}
                         />
                       </DrawerClose>
                     );
                   })}
                 </ul>
 
-                <Button
-                  variant="destructive"
-                  onClick={handleLogout}
-                  className=" justify-start px-5 bg-transparent! hover:bg-[var(--destructive)]! text-[var(--foreground)] "
-                  icon={<LogOut className="size-5" />}
-                >
-                  Logout
-                </Button>
+                {user ? (
+                  <DrawerClose className="text-start ">
+                    <Button
+                      variant="destructive"
+                      onClick={handleLogout}
+                      className=" justify-start px-5 bg-transparent! hover:bg-[var(--destructive)]! text-[var(--foreground)] "
+                      icon={<LogOut className="size-5" />}
+                    >
+                      Logout
+                    </Button>
+                  </DrawerClose>
+                ) : (
+                  <DrawerClose className="text-start ">
+                    <Link to={"/login"}>
+                      <Button
+                        variant="destructive"
+                        className=" justify-start px-5 bg-transparent! hover:bg-[var(--destructive)]! text-[var(--foreground)] "
+                        icon={<LogIn className="size-5" />}
+                      >
+                        Logoin
+                      </Button>
+                    </Link>
+                  </DrawerClose>
+                )}
               </div>
 
               <DrawerFooter>
@@ -147,7 +165,6 @@ export default function NavBare() {
         </ul>
 
         <div className="hidden md:flex  items-center gap-8">
-          
           <div className="flex items-center gap-4">
             {icons.map((item) => {
               return (
@@ -158,7 +175,7 @@ export default function NavBare() {
                 >
                   {item.icon}
                   {item.length > 0 && (
-                    <span className=" absolute w-4 h-4 rounded-full flex justify-center items-center text-[12px] -top-2 -right-2 bg-amber-600">
+                    <span className=" absolute w-4 h-4 rounded-full flex justify-center items-center text-[12px] -top-2 -right-2 bg-primary text-primary-foreground">
                       {item.length}
                     </span>
                   )}
