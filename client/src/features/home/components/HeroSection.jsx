@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 import { Link } from "react-router";
-import Hero from "@/assets/Hero.png";
+import Hero from "@/assets/hero.png";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
