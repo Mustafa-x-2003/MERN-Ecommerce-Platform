@@ -1,10 +1,17 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import Home from "../Features/home/pages/Home";
+
+import Layout from "../components/layout/Layout";
+import HomePage from "../Features/home/pages/HomePage";
+import LoginPage from "../Features/auth/pages/LoginPage";
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="dashboard" element={<HomePage />} />
+          <Route path="login" element={<LoginPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
