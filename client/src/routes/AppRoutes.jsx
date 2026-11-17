@@ -1,7 +1,7 @@
 import React from "react";
 
 import LoginPage from "../features/auth/pages/LoginPage";
-import HomePage from "../features/home/pages/HomePage";
+import Overview from "../features/home/pages/Overview";
 import { Route, Routes } from "react-router";
 import ProtectedRoute from "./ProtectedRoute";
 import RegisterPage from "../features/auth/pages/RegisterPage";
@@ -25,8 +25,8 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="home" element={<HomePage />} />
+        <Route index element={<Overview />} />
+        <Route path="home" element={<Overview />} />
         <Route path="products" element={<ProductsPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="login" element={<LoginPage />} />

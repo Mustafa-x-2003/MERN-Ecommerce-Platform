@@ -18,7 +18,7 @@ export default function Layout() {
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-y-auto ">{/* <Outlet /> */}</main>
+        <main className="flex-1 overflow-y-auto p-5">{<Outlet />}</main>
       </div>
     </div>
   );
