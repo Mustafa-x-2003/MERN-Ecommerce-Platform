@@ -10,8 +10,8 @@ import SidebarItem from "../ui/SidebarItem";
 export default function SidebarLinks() {
   const links = [
     {
-      title: "Dashboard",
-      path: "dashboard",
+      title: "Overview",
+      path: "overview",
       icon: <House size={18} />,
     },
     {
