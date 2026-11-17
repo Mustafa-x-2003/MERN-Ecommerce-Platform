@@ -59,3 +59,22 @@ export const getBrandById = asyncHandler(async (req, res) => {
     data: brand,
   });
 });
+/**
+  @desc    Update  brands 
+  @route   PUT /api/brand/:id
+  @access  Private (Admin)
+*/
+export const updateBrand = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  const brand = await Brand.findById(id);
+  if (!brand) {
+    throw new ApiError(`No brand found for id: ${id}`, 404);
+  }
+  brand.name = name;
+  await brand.save();
+  res.status(200).json({
+    success: true,
+    data: brand,
+  });
+});
