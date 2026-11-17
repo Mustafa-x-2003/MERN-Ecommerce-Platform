@@ -15,6 +15,7 @@ import ApiError from "./utils/errorClass.js";
 import globalError from "./middleware/globalError.js";
 import connectDB from "./config/db.js";
 import subCategoryRouter from "./router/subcategoryRouter.js";
+import brandRouter from "./router/brandRouter.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -34,6 +35,7 @@ app.use("/api/products", routerProduct);
 app.use("/api/cart", cartRouter);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/brand", brandRouter);
 app.use("/api/subCategory", subCategoryRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/admin", overviewStatsRouter);

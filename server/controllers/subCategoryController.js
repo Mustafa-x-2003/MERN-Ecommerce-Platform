@@ -17,9 +17,12 @@ export const createSubCategory = asyncHandler(async (req, res) => {
 });
 export const getSubCategory = asyncHandler(async (req, res) => {
   let { page, limit } = req.validateData;
-
+  let filtter = {};
+  if (req.params.categoryID) {
+    filtter = { category: req.params.categoryID };
+  }
   const skip = (page - 1) * limit;
-  const subCategory = await SubCategory.find().skip(skip).limit(limit);
+  const subCategory = await SubCategory.find(filtter).skip(skip).limit(limit);
   const totalSubCategory = await SubCategory.countDocuments();
   const totalPages = Math.ceil(totalSubCategory / limit);
 
