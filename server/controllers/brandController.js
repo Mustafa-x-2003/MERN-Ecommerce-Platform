@@ -28,7 +28,6 @@ export const createBrand = asyncHandler(async (req, res) => {
 export const getBrands = asyncHandler(async (req, res) => {
   const { page, limit } = req.validateData;
 
-  
   const skip = (page - 1) * limit;
   const brands = await Brand.find({}).skip(skip).limit(limit);
   const totalBrands = await Brand.countDocuments();
@@ -42,5 +41,21 @@ export const getBrands = asyncHandler(async (req, res) => {
     totalPages,
     limit,
     data: brands,
+  });
+});
+/**
+  @desc    Retrieve  brands by id
+  @route   GET /api/brand/:id
+  @access  Public
+*/
+export const getBrandById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const brand = await Brand.findById(id);
+  if (!brand) {
+    throw new ApiError(`No brand found for id: ${id}`, 404);
+  }
+  res.status(200).json({
+    success: true,
+    data: brand,
   });
 });
