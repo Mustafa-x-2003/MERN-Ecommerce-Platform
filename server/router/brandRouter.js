@@ -5,6 +5,7 @@ import validator from "../middleware/valitatorMiddleware.js";
 // Controllers
 import {
   createBrand,
+  deleteBrand,
   getBrandById,
   getBrands,
   updateBrand,
@@ -20,9 +21,10 @@ brandRouter.post("/", validator(createBrandValidator, "body"), createBrand);
 brandRouter.get("/", validator(getBrandsValidator, "query"), getBrands);
 brandRouter.get("/:id", validator(idParamSchema, "params"), getBrandById);
 brandRouter.put(
-  "/:id",
-  validator(idParamSchema, "params"),
-  validator(updateBrandValidator, "body"),
-  updateBrand,
+    "/:id",
+    validator(idParamSchema, "params"),
+    validator(updateBrandValidator, "body"),
+    updateBrand,
 );
+brandRouter.delete("/:id", validator(idParamSchema, "params"), deleteBrand);
 export default brandRouter;

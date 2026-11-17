@@ -44,7 +44,7 @@ export const getBrands = asyncHandler(async (req, res) => {
   });
 });
 /**
-  @desc    Retrieve  brands by id
+  @desc    Retrieve brands by id
   @route   GET /api/brand/:id
   @access  Public
 */
@@ -60,7 +60,7 @@ export const getBrandById = asyncHandler(async (req, res) => {
   });
 });
 /**
-  @desc    Update  brands 
+  @desc    Update brand
   @route   PUT /api/brand/:id
   @access  Private (Admin)
 */
@@ -73,6 +73,23 @@ export const updateBrand = asyncHandler(async (req, res) => {
   }
   brand.name = name;
   await brand.save();
+  res.status(200).json({
+    success: true,
+    data: brand,
+  });
+});
+
+/**
+  @desc    Delete brand
+  @route   PUT /api/brand/:id
+  @access  Private (Admin)
+*/
+export const deleteBrand = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const brand = await Brand.findByIdAndDelete(id);
+  if (!brand) {
+    throw new ApiError(`No brand found for id: ${id}`, 404);
+  }
   res.status(200).json({
     success: true,
     data: brand,
