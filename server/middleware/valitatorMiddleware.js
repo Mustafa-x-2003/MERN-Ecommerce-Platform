@@ -1,5 +1,3 @@
-
-
 import asyncHandler from "express-async-handler";
 
 const validator = (schema, property = "body") => {
@@ -19,4 +17,3 @@ const validator = (schema, property = "body") => {
 };
 
 export default validator;
-

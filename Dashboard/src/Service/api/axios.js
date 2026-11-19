@@ -1,5 +1,6 @@
 import axios from "axios";
 const api = axios.create({
+  // baseURL: "https://mern-ecommerce-platform-production-fc7c.up.railway.app/api",
   baseURL: "http://localhost:3000/api",
   headers: {
     "Content-Type": "application/json",
@@ -31,4 +32,4 @@ api.interceptors.response.use(
   },
 );
 
-export default api
+export default api;
