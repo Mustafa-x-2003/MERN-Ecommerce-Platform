@@ -1,21 +1,31 @@
 import mongoose from "mongoose";
+import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
-export const createProduct = async (req, res) => {
-  try {
-    const images = req.files.map((image) => image.path);
-    const product = new Product({ ...req.body, images });
-    await product.save();
-    res.status(201).json({
-      message: "Product created successfully",
-      product,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "",
-      error: error.message,
-    });
-  }
-};
+export const createProduct = asyncHandler(async (req, res) => {
+  //   const images = req.files.map((image) => image.path);
+  //   const product = new Product({ ...req.body, images });
+
+  const product = new Product(req.body);
+  await product.save();
+  res.status(201).json({
+    success: true,
+    message: "Product ctreted successfully",
+    data: product,
+  });
+  // try {
+
+  //   await product.save();
+  //   res.status(201).json({
+  //     message: "Product created successfully",
+  //     product,
+  //   });
+  // } catch (error) {
+  //   res.status(500).json({
+  //     message: "",
+  //     error: error.message,
+  //   });
+  // }
+});
 export const getProducts = async (req, res) => {
   try {
     const { name, category, minPrice, maxPrice } = req.query;
