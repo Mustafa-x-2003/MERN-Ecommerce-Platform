@@ -15,9 +15,9 @@ export const createProduct = asyncHandler(async (req, res) => {
 });
 
 export const getProducts = asyncHandler(async (req, res) => {
-  // Filtreing
+  // 1) Filtreing
   const queryStringObj = { ...req.validateData };
-  const excludesFields = ["page", "limit", "sort", "fields"];
+  const excludesFields = ["page", "limit", "sort", "fields", "keyword"];
   excludesFields.forEach((field) => delete queryStringObj[field]);
 
   const queryStr = JSON.stringify(queryStringObj);
@@ -26,13 +26,38 @@ export const getProducts = asyncHandler(async (req, res) => {
     queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`),
   );
 
-  // Pagination
+  // 2) Pagination
   const { page, limit } = req.validateData;
   const skip = (page - 1) * limit;
-
   const mongooseQuery = Product.find(filter).skip(skip).limit(limit);
+  // 3) Sorting
+  if (req.validateData.sort) {
+    const sortBy = req.validateData.sort.split(",").join(" ");
+    console.log(sortBy);
+    console.log(req.validateData.sort);
+
+    mongooseQuery.sort(sortBy);
+  }
+  // 4) Fields limiting
+  if (req.validateData.fields) {
+    const fields = req.validateData.fields.split(",").join(" ");
+    mongooseQuery.select(fields);
+  }
+  // 5) Search
+  if (req.validateData.keyword) {
+    const keyword = req.validateData.keyword;
+
+    const searchBy = {
+      $or: [
+        { title: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ],
+    };
+
+    mongooseQuery.find(searchBy);
+  }
   const products = await mongooseQuery;
-  
+
   const totalProducts = await Product.countDocuments(filter);
   const totalPages = Math.ceil(totalProducts / limit);
 
