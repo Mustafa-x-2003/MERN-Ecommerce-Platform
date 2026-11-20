@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import ApiError from "../utils/errorClass.js";
 import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 export const createProduct = asyncHandler(async (req, res) => {
@@ -12,85 +12,50 @@ export const createProduct = asyncHandler(async (req, res) => {
     message: "Product ctreted successfully",
     data: product,
   });
-  // try {
-
-  //   await product.save();
-  //   res.status(201).json({
-  //     message: "Product created successfully",
-  //     product,
-  //   });
-  // } catch (error) {
-  //   res.status(500).json({
-  //     message: "",
-  //     error: error.message,
-  //   });
-  // }
 });
-export const getProducts = async (req, res) => {
-  try {
-    const { name, category, minPrice, maxPrice } = req.query;
 
-    const filter = {};
+export const getProducts = asyncHandler(async (req, res) => {
+  // Filtreing
+  const queryStringObj = { ...req.validateData };
+  const excludesFields = ["page", "limit", "sort", "fields"];
+  excludesFields.forEach((field) => delete queryStringObj[field]);
 
-    if (name) {
-      filter.name = {
-        $regex: name,
-        $options: "i",
-      };
-    }
+  const queryStr = JSON.stringify(queryStringObj);
 
-    if (category) {
-      filter.category = category;
-    }
+  const filter = JSON.parse(
+    queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`),
+  );
 
-    if (minPrice || maxPrice) {
-      filter.price = {};
+  // Pagination
+  const { page, limit } = req.validateData;
+  const skip = (page - 1) * limit;
 
-      if (minPrice) {
-        filter.price.$gte = Number(minPrice);
-      }
+  const mongooseQuery = Product.find(filter).skip(skip).limit(limit);
+  const products = await mongooseQuery;
+  
+  const totalProducts = await Product.countDocuments(filter);
+  const totalPages = Math.ceil(totalProducts / limit);
 
-      if (maxPrice) {
-        filter.price.$lte = Number(maxPrice);
-      }
-    }
+  return res.status(200).json({
+    success: true,
+    message: "Products retrieved successfully",
+    result: products.length,
+    totalProducts,
+    currentPage: page,
+    totalPages,
+    limit,
+    data: products,
+  });
+});
 
-    const products = await Product.find(filter);
-
-    res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error fetching products",
-      error: error.message,
-    });
+export const getProduct = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  if (!product) {
+    throw new ApiError(`Product not found for id: ${id}`, 404);
   }
-};
-
-export const getProduct = async (req, res) => {
-  try {
-    const productID = req.params.id;
-    if (!productID || !mongoose.Types.ObjectId.isValid(productID)) {
-      return res.status(404).json({
-        success: false,
-        message: "Invalid product ID",
-      });
-    }
-    const product = await Product.findById(productID);
-    if (!product) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found",
-      });
-    }
-    res.status(200).json({
-      success: true,
-      product,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(404).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-};
+  res.status(200).json({
+    success: true,
+    data: product,
+  });
+});
