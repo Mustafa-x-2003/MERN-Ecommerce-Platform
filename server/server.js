@@ -28,7 +28,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("API Working");
 });
-
+app.set("query parser", "extended");
 app.use("/api/auth", routerUser);
 app.use("/api/address", routerAddress);
 app.use("/api/products", routerProduct);

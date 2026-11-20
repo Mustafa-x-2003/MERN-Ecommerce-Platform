@@ -2,6 +2,7 @@ import joi from "joi";
 import Category from "../models/categoryModel.js";
 import ApiError from "../utils/errorClass.js";
 import SubCategory from "../models/subCategoryModel.js";
+import { paginationSchema } from "../utils/sharedSchemas.js";
 export const createProductValidator = joi
   .object({
     title: joi.string().trim().required().min(2).max(100),
@@ -56,3 +57,8 @@ export const createProductValidator = joi
       );
     }
   });
+
+
+export const getProductsValidator = joi.object({
+  ...paginationSchema
+}).unknown()
